@@ -13,8 +13,17 @@ let connected = false;
 
 async function connect() {
   if (!connected) {
-    await mongoose.connect(process.env.MONGO_URL);
-    connected = true;
+    try {
+      await mongoose.connect(process.env.MONGO_URL, {
+        serverSelectionTimeoutMS: 5000,
+        connectTimeoutMS: 5000,
+        family: 4,
+      });
+      connected = true;
+    } catch (err) {
+      connected = false;
+      throw err;
+    }
   }
 }
 
