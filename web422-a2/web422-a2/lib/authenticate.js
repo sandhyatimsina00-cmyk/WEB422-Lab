@@ -46,11 +46,85 @@ export function isAuthenticated() {
 }
 
 export async function authenticateUser(user, password) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+  const base = process.env.NEXT_PUBLIC_API_URL || "";
+  const loginUrl = `${base}/login`;
+  // #region agent log
+  {
+    let sameOriginAsPage = null;
+    if (typeof window !== "undefined" && base) {
+      try {
+        sameOriginAsPage = new URL(base).origin === window.location.origin;
+      } catch {
+        sameOriginAsPage = "invalid-base-url";
+      }
+    }
+    fetch("http://127.0.0.1:7461/ingest/3a6e480d-5221-4f65-8eb6-7dae8fa53e9e", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Debug-Session-Id": "7b185b",
+      },
+      body: JSON.stringify({
+        sessionId: "7b185b",
+        hypothesisId: "H1",
+        location: "authenticate.js:authenticateUser:pre",
+        message: "login fetch about to start",
+        data: {
+          baseLen: base.length,
+          basePrefix: base.slice(0, 96),
+          pageOrigin:
+            typeof window !== "undefined" ? window.location.origin : "ssr",
+          sameOriginAsPage,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+  }
+  // #endregion
+  let res;
+  try {
+    res = await fetch(loginUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userName: user, password }),
+    });
+  } catch (err) {
+    // #region agent log
+    fetch("http://127.0.0.1:7461/ingest/3a6e480d-5221-4f65-8eb6-7dae8fa53e9e", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Debug-Session-Id": "7b185b",
+      },
+      body: JSON.stringify({
+        sessionId: "7b185b",
+        hypothesisId: "H3",
+        location: "authenticate.js:authenticateUser:catch",
+        message: "login fetch threw",
+        data: { name: err?.name, message: String(err?.message).slice(0, 200) },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+    // #endregion
+    throw err;
+  }
+  // #region agent log
+  fetch("http://127.0.0.1:7461/ingest/3a6e480d-5221-4f65-8eb6-7dae8fa53e9e", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userName: user, password }),
-  });
+    headers: {
+      "Content-Type": "application/json",
+      "X-Debug-Session-Id": "7b185b",
+    },
+    body: JSON.stringify({
+      sessionId: "7b185b",
+      hypothesisId: "H4",
+      location: "authenticate.js:authenticateUser:post",
+      message: "login fetch response",
+      data: { status: res.status, ok: res.ok },
+      timestamp: Date.now(),
+    }),
+  }).catch(() => {});
+  // #endregion
   const data = await res.json().catch(() => ({}));
   if (res.status === 200 && data.message?.token) {
     setToken(data.message.token);
@@ -64,11 +138,85 @@ export async function authenticateUser(user, password) {
 }
 
 export async function registerUser(user, password, password2) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
+  const base = process.env.NEXT_PUBLIC_API_URL || "";
+  const registerUrl = `${base}/register`;
+  // #region agent log
+  {
+    let sameOriginAsPage = null;
+    if (typeof window !== "undefined" && base) {
+      try {
+        sameOriginAsPage = new URL(base).origin === window.location.origin;
+      } catch {
+        sameOriginAsPage = "invalid-base-url";
+      }
+    }
+    fetch("http://127.0.0.1:7461/ingest/3a6e480d-5221-4f65-8eb6-7dae8fa53e9e", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Debug-Session-Id": "7b185b",
+      },
+      body: JSON.stringify({
+        sessionId: "7b185b",
+        hypothesisId: "H2",
+        location: "authenticate.js:registerUser:pre",
+        message: "register fetch about to start",
+        data: {
+          baseLen: base.length,
+          basePrefix: base.slice(0, 96),
+          pageOrigin:
+            typeof window !== "undefined" ? window.location.origin : "ssr",
+          sameOriginAsPage,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+  }
+  // #endregion
+  let res;
+  try {
+    res = await fetch(registerUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userName: user, password, password2 }),
+    });
+  } catch (err) {
+    // #region agent log
+    fetch("http://127.0.0.1:7461/ingest/3a6e480d-5221-4f65-8eb6-7dae8fa53e9e", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Debug-Session-Id": "7b185b",
+      },
+      body: JSON.stringify({
+        sessionId: "7b185b",
+        hypothesisId: "H3",
+        location: "authenticate.js:registerUser:catch",
+        message: "register fetch threw",
+        data: { name: err?.name, message: String(err?.message).slice(0, 200) },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+    // #endregion
+    throw err;
+  }
+  // #region agent log
+  fetch("http://127.0.0.1:7461/ingest/3a6e480d-5221-4f65-8eb6-7dae8fa53e9e", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userName: user, password, password2 }),
-  });
+    headers: {
+      "Content-Type": "application/json",
+      "X-Debug-Session-Id": "7b185b",
+    },
+    body: JSON.stringify({
+      sessionId: "7b185b",
+      hypothesisId: "H4",
+      location: "authenticate.js:registerUser:post",
+      message: "register fetch response",
+      data: { status: res.status, ok: res.ok },
+      timestamp: Date.now(),
+    }),
+  }).catch(() => {});
+  // #endregion
   if (res.status === 200) {
     return true;
   }

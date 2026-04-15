@@ -43,6 +43,10 @@ app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(passport.initialize());
 
+app.get("/api/ping", (req, res) => {
+  res.status(200).json({ ok: true });
+});
+
 app.post("/api/user/register", async (req, res) => {
   try {
     await userService.registerUser(

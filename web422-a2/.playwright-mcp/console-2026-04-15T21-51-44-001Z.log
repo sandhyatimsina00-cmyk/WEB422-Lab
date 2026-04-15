@@ -1,0 +1,6 @@
+[     340ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "new-password"): (More info: https://goo.gl/9p2vKq) %o @ https://web-422-lab-fs3t.vercel.app/register:0
+[     340ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "new-password"): (More info: https://goo.gl/9p2vKq) %o @ https://web-422-lab-fs3t.vercel.app/register:0
+[  313978ms] [ERROR] Access to fetch at 'https://web-422-lab.vercel.app/api/user/register' from origin 'https://web-422-lab-fs3t.vercel.app' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://web-422-lab-fs3t.vercel.app/register:0
+[  313979ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://web-422-lab.vercel.app/api/user/register:0
+[  320132ms] [ERROR] Access to fetch at 'https://web-422-lab.vercel.app/api/user/register' from origin 'https://web-422-lab-fs3t.vercel.app' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://web-422-lab-fs3t.vercel.app/register:0
+[  320132ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://web-422-lab.vercel.app/api/user/register:0

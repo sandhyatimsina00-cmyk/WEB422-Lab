@@ -9,22 +9,35 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 
-let connected = false;
+const connectOpts = {
+  serverSelectionTimeoutMS: 10000,
+  connectTimeoutMS: 10000,
+  socketTimeoutMS: 20000,
+  maxPoolSize: 5,
+  bufferCommands: false,
+};
+
+let connectPromise = null;
 
 async function connect() {
-  if (!connected) {
-    try {
-      await mongoose.connect(process.env.MONGO_URL, {
-        serverSelectionTimeoutMS: 5000,
-        connectTimeoutMS: 5000,
-        family: 4,
-      });
-      connected = true;
-    } catch (err) {
-      connected = false;
-      throw err;
-    }
+  if (mongoose.connection.readyState === 1) {
+    return;
   }
+  if (connectPromise) {
+    await connectPromise;
+    return;
+  }
+  if (!process.env.MONGO_URL) {
+    throw new Error("MONGO_URL is not set");
+  }
+  connectPromise = mongoose
+    .connect(process.env.MONGO_URL, connectOpts)
+    .then(() => undefined)
+    .catch((err) => {
+      connectPromise = null;
+      throw err;
+    });
+  await connectPromise;
 }
 
 module.exports.findUserById = async function findUserById(id) {
